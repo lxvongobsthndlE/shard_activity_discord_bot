@@ -1,0 +1,8 @@
+#node
+node_modules/
+
+#IDE specific
+/.vscode
+
+#Confidential or not required files
+secret.json
