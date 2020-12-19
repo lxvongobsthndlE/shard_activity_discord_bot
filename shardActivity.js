@@ -77,7 +77,7 @@ discordClient.on('message', async message => {
             // sa!show
             const userList = await UserActivity.findAll({ attributes: ['username', 'message_count', 'last_activity'] });
             const userString = userList.map(u => u.username + ' [' + u.message_count + '] ' + u.last_activity).join('\n') || 'No users set.';
-            return message.channel.send('List of users: ' + userString);
+            return message.channel.send('List of users: \n' + userString);
         } else if (command === 'touch') {
             // sa!touch
             const userID = commandArgs[0];
