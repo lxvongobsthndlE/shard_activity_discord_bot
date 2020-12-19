@@ -76,8 +76,8 @@ discordClient.on('message', async message => {
         if (command === 'show') {
             // sa!show
             const userList = await UserActivity.findAll({ attributes: ['username', 'message_count', 'last_activity'] });
-            //optional: sort list
-            userList.sort((a, b) => a.message_count - b.message_count);
+            //optional: sort list descending
+            userList.sort((a, b) => b.message_count - a.message_count);
             const userString = userList.map(u => ' [' + u.message_count + '] ' + u.username + ' | ' + ((u.last_activity == null) ? null : u.last_activity.toLocaleString())).join('\n') || 'No users set.';
             return message.channel.send('List of users: \n' + userString);
         } else if (command === 'touch') {
