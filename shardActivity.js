@@ -60,7 +60,7 @@ discordClient.login(secret.discordToken);
 //EVENT on any message on any server
 discordClient.on('message', async message => {
     // Allmighty Logger. Don't use this. Seriously, don't.
-    console.log('[' + message.guild.name + '][' + message.channel.name + '] ' + message.author.tag + ': ' + message.content);
+    //console.log('[' + message.guild.name + '][' + message.channel.name + '] ' + message.author.tag + ': ' + message.content);
 
     // Ignore Bot messages.
     if (message.author.bot) return;
@@ -76,7 +76,7 @@ discordClient.on('message', async message => {
         if (command === 'show') {
             // sa!show
             const userList = await UserActivity.findAll({ attributes: ['username', 'message_count', 'last_activity'] });
-            const userString = userList.map(u => u.username + ' [' + u.message_count + '] ' + u.last_activity).join('\n') || 'No users set.';
+            const userString = userList.map(u => u.username + ' [' + u.message_count + '] ' + u.last_activity.toLocaleString()).join('\n') || 'No users set.';
             return message.channel.send('List of users: \n' + userString);
         } else if (command === 'touch') {
             // sa!touch
@@ -98,7 +98,7 @@ discordClient.on('message', async message => {
     const USERID = message.author.id;
     const USERNAME = message.author.username;
     const now = new Date();
-    const TIMESTAMP = now.getFullYear() + '-' + now.getMonth() + '-' + now.getDay() + ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
+    const TIMESTAMP = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate() + ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
 
     /// Save activity to db -------------------------------------
     //Skip if user on timeout
