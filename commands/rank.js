@@ -18,9 +18,10 @@ module.exports = {
         var embed = new DiscordMessageEmbed().setColor('#0099ff').setAuthor(message.author.tag, message.author.displayAvatarURL()).setTimestamp();
         const user = await message.client.db.UserActivity.findOne({ where: { userid: message.author.id } });
         if (user) {
-            embed.addField('Rank', getRank(message.author.id, message.client.db))
+            embed.addField('Rank', await getRank(message.author.id, message.client.db))
             embed.addField('Exp', user.get('exp') + '/' + getNextLevelXP(user.get('exp')), true);
             embed.addField('Level', getLevel(user.get('exp')), true);
+            embed.addField('Total Messages', user.get('message_count'));
         }
 
         message.channel.send(embed);
@@ -43,6 +44,13 @@ function getNextLevelXP(xp) {
 }
 
 //Returns the rank of a user
-function getRank(userID, db) {
-    return 0; //TODO
+async function getRank(userID, db) {
+    const allUsers = await db.UserActivity.findAll({ attributes: ['userid', 'exp']});
+    allUsers.sort((a, b) => b.exp - a.exp);
+    for(var i = 0; i < allUsers.length; i++) {
+        if(allUsers[i].userid == userID) {
+            return i + 1;
+        }
+    }
+    return 0;
 }
