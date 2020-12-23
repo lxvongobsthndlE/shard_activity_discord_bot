@@ -1,0 +1,13 @@
+{
+  "guildId": "743221608113766453",
+  "prefix": "sa!",
+  "rankUpChannelId": "",
+  "excludedChannels": [],
+  "messageXPmin": 16,
+  "messageXPmax": 24,
+  "messageXPtimeout": "30000",
+  "botCommandChannelId": "",
+  "ADMIN_IDS": [
+    "313742410180198431"
+  ]
+}

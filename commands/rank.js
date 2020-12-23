@@ -1,0 +1,48 @@
+const DiscordMessageEmbed = require('discord.js').MessageEmbed;
+const xpLevels = require('../botData/xpLevels.json');
+
+/** Command: rank
+ *  Returns the executing users exp, message_count and rank on the server
+ * TODO: calc rank
+ */
+module.exports = {
+    name: 'rank',
+    description: 'See your rank, exp and message count on this server.',
+    args: false,
+    usage: '',
+    aliases: ['exp', 'xp'],
+    async execute(message, args, guildConfig) {
+        if(guildConfig.botCommandChannelId !== '' && guildConfig.botCommandChannelId !== message.channel.id) return message.channel.send("Failed");
+        console.log(message.author.username + ' called "rank" command' + ((args.length > 0) ? ' with args: ' + args : '.'));
+
+        var embed = new DiscordMessageEmbed().setColor('#0099ff').setAuthor(message.author.tag, message.author.displayAvatarURL()).setTimestamp();
+        const user = await message.client.db.UserActivity.findOne({ where: { userid: message.author.id } });
+        if (user) {
+            embed.addField('Rank', getRank(message.author.id, message.client.db))
+            embed.addField('Exp', user.get('exp') + '/' + getNextLevelXP(user.get('exp')), true);
+            embed.addField('Level', getLevel(user.get('exp')), true);
+        }
+
+        message.channel.send(embed);
+    }
+}
+
+//Returns the level by xp
+function getLevel(xp) {
+    var level = 0;
+    xpLevels.forEach(l => {
+        if (xp > l.exp) level = l.level;
+        else return;
+    })
+    return level;
+}
+
+//Returns the xp required for the next level by xp
+function getNextLevelXP(xp) {
+    return xpLevels.find(el => el.level == getLevel(xp) + 1).exp;
+}
+
+//Returns the rank of a user
+function getRank(userID, db) {
+    return 0; //TODO
+}
