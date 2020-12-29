@@ -13,7 +13,7 @@ module.exports = {
     usage: '<status>',
     execute(message, args, guildConfig) {
         if(message.author.id !== "313742410180198431") return;
-        console.log(message.author.username + ' called "shard-status" command' + ((args.length > 0) ? ' with args: ' + args : '.'));
+        console.log(message.author.username + ' called "sa-status" command' + ((args.length > 0) ? ' with args: ' + args : '.'));
 
         const stati = ['online', 'idle', 'dnd', 'invisible'];
 
