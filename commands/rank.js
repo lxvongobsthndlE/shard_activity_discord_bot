@@ -18,8 +18,9 @@ module.exports = {
         var embed = new DiscordMessageEmbed().setColor('#0099ff').setAuthor(message.author.tag, message.author.displayAvatarURL()).setTimestamp();
         const user = await message.client.db.UserActivity.findOne({ where: { userid: message.author.id } });
         if (user) {
-            embed.setDescription('\n**Level: ' + getLevel(user.get('exp')) + '\n\nXP: ' + user.get('exp') + '/' + getNextLevelXP(user.get('exp')) + '**\n\n');
-            embed.addField('Total Messages', user.get('message_count'));
+            embed.setDescription('\n**Level: ' + getLevel(user.get('exp')) 
+            + '**\n\n**XP: ' + user.get('exp') + '/' + getNextLevelXP(user.get('exp')) 
+            + '**\n\n**Total messages: ' + user.get('message_count') + '**\n\n');
             embed.setThumbnail('https://dummyimage.com/100x100/2c2f33/ffffff&text=Rank+' + await getRank(message.author.id, message.client.db));
         }
 
