@@ -1,5 +1,5 @@
 const DiscordMessageEmbed = require('discord.js').MessageEmbed;
-const xpLevels = require('../botData/xpLevels.json');
+const levels = require('../botData/xpLevels.json');
 
 /** Command: rank
  *  Returns the executing users exp, message_count and rank on the server
