@@ -7,7 +7,7 @@ const xpLevels = require('../botData/xpLevels.json');
  */
 module.exports = {
     name: 'rank',
-    description: 'See your rank, exp and message count on this server.',
+    description: 'See your rank, exp, level and message count on this server.',
     args: false,
     usage: '',
     aliases: ['exp', 'xp'],
@@ -18,8 +18,9 @@ module.exports = {
         var embed = new DiscordMessageEmbed().setColor('#0099ff').setAuthor(message.author.tag, message.author.displayAvatarURL()).setTimestamp();
         const user = await message.client.db.UserActivity.findOne({ where: { userid: message.author.id } });
         if (user) {
-            embed.setDescription('\n**Level: ' + getLevel(user.get('exp')) 
-            + '**\n\n**XP: ' + user.get('exp') + '/' + getNextLevelXP(user.get('exp')) 
+            let userLVL = getLevel(user.get('exp'));
+            embed.setDescription('\n**Level: ' + userLVL
+            + '**\n\n**XP: ' + user.get('exp') + '/' + getNextLevelExp(userLVL, true) 
             + '**\n\n**Total messages: ' + user.get('message_count') + '**\n\n');
             embed.setThumbnail('https://dummyimage.com/100x100/2c2f33/ffffff&text=Rank+' + await getRank(message.author.id, message.client.db));
         }
@@ -28,19 +29,24 @@ module.exports = {
     }
 }
 
-//Returns the level by xp
-function getLevel(xp) {
+//Returns the level a user has by exp the user got
+function getLevel(userEXP) {
     var level = 0;
-    xpLevels.forEach(l => {
-        if (xp > l.exp) level = l.level;
+    levels.forEach(l => {
+        if (userEXP > l.totalExp) level = l.level;
         else return;
     })
     return level;
 }
 
-//Returns the xp required for the next level by xp
-function getNextLevelXP(xp) {
-    return xpLevels.find(el => el.level == getLevel(xp) + 1).exp;
+//Returns the total exp required for the next level by xp (isLevel==false) or by level (isLevel==true)
+function getNextLevelExp(userEXPorLVL, isLevel=false) {
+    if (isLevel) {
+        return levels[userEXPorLVL + 1].totalExp;
+    }
+    else {
+        return levels[getLevel(userEXPorLVL) + 1].totalExp;
+    }
 }
 
 //Returns the rank of a user
