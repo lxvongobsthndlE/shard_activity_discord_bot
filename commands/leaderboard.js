@@ -21,7 +21,7 @@ module.exports = {
         userList.splice(10);
         const userString = userList.map(u => u.username +' - ' + u.exp + 'EXP (' + u.message_count + ' total messages)').join('\n') || 'No users found.';
 
-        embed.setDescription(userList)
+        embed.setDescription(userString)
 
         message.channel.send(embed);
     }
