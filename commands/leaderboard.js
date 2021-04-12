@@ -9,7 +9,7 @@ module.exports = {
     aliases: ['lb'],
     numOfEntries: 10,
     usage: '',
-    execute(message, args, guildConfig) {
+    async execute(message, args, guildConfig) {
         if(guildConfig.botCommandChannelId !== '' && guildConfig.botCommandChannelId !== message.channel.id) return message.channel.send("Failed");
         console.log(message.author.username + ' called "leaderboard" command' + ((args.length > 0) ? ' with args: ' + args : '.'));
 
