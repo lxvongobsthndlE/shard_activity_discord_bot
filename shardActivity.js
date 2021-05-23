@@ -71,10 +71,30 @@ discordClient.db.UserActivity = sequelize.define('useractivity', {
 // BOT LOGIC --------------------------------------------------------------------------
 // Start client and set bot presence data
 discordClient.once('ready', () => {
-    console.log('ShardActivity-Client ready!');
-    discordClient.user.setPresence({ activity: { name: presence.activity, type: presence.activityType }, status: presence.status });
     // Sync DB-models
     discordClient.db.UserActivity.sync();
+
+    //Set presence
+    discordClient.user.setPresence(
+        { 
+            activity: { 
+                name: presence.activity,
+                type: presence.activityType 
+            }, 
+            status: presence.status 
+        });
+    setInterval(() => {
+        discordClient.user.setPresence(
+            { activity: { 
+                name: presence.activity, 
+                type: presence.activityType 
+            }, 
+            status: presence.status 
+        });
+    }, 60000);
+    
+    //READY
+    console.log('Shard-Activity-Client ready!\nServing ' + discordClient.guilds.cache.size + ' servers.');
 });
 
 // Login client
